@@ -146,15 +146,14 @@ async function displayPopularMovies() {
 async function displayPopularShows() {
   const { results } = await fetchAPIData('tv/popular');
   const container = document.querySelector('#popular-shows');
-  console.log(results);
-  results.forEach((show) => {
-  console.log(show.name, show.poster_path); // helps you debug missing images
-});
-
   if (!container) return;
+
+  console.log(results); // Debug log
 
   container.innerHTML = '';
   results.forEach((show) => {
+    console.log(show.name, show.poster_path); // Log to debug missing posters
+
     const div = document.createElement('div');
     div.classList.add('card');
     div.innerHTML = `
@@ -163,7 +162,7 @@ async function displayPopularShows() {
       </a>
       <div class="card-body">
         <h5 class="card-title">${show.name}</h5>
-        <p class="card-text"><small class="text-muted">Aired: ${show.first_air_date}</small></p>
+        <p class="card-text"><small class="text-muted">Aired: ${show.first_air_date || 'N/A'}</small></p>
       </div>
     `;
     container.appendChild(div);
@@ -298,7 +297,7 @@ function displaySearchResults(results) {
 }
 
 // -----------------------------
-// API
+// API Helpers
 // -----------------------------
 async function fetchAPIData(endpoint) {
   showSpinner();
@@ -319,10 +318,12 @@ async function searchAPIData() {
 }
 
 // -----------------------------
-// Helpers
+// Utilities
 // -----------------------------
 function getPoster(posterPath) {
-  return posterPath ? `https://image.tmdb.org/t/p/w500${posterPath}` : 'Images/no-image.jpg';
+  return posterPath
+    ? `https://image.tmdb.org/t/p/w500${posterPath}`
+    : 'Images/no-image.jpg'; // Fallback image
 }
 
 function showSpinner() {

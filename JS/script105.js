@@ -39,7 +39,9 @@ function init() {
   highlightActiveLink();
 }
 
-// --- Movie Slider ---
+// -----------------------------
+// Movie Slider
+// -----------------------------
 async function displaySlider() {
   const { results } = await fetchAPIData('movie/now_playing');
   const wrapper = document.querySelector('.swiper-wrapper');
@@ -51,11 +53,10 @@ async function displaySlider() {
     div.classList.add('swiper-slide');
     div.innerHTML = `
       <a href="movie-details.html?id=${movie.id}">
-        <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}" />
+        <img src="${getPoster(movie.poster_path)}" alt="${movie.title}" />
       </a>
       <h4 class="swiper-rating">
-        <i class="fas fa-star text-secondary"></i>
-        ${movie.vote_average}/10
+        <i class="fas fa-star text-secondary"></i> ${movie.vote_average.toFixed(1)}/10
       </h4>
     `;
     wrapper.appendChild(div);
@@ -76,7 +77,9 @@ async function displaySlider() {
   });
 }
 
-// --- Show Slider ---
+// -----------------------------
+// Show Slider
+// -----------------------------
 async function displayShowSlider() {
   const { results } = await fetchAPIData('tv/on_the_air');
   const wrapper = document.querySelector('.swiper-wrapper');
@@ -88,11 +91,10 @@ async function displayShowSlider() {
     div.classList.add('swiper-slide');
     div.innerHTML = `
       <a href="tv-details.html?id=${show.id}">
-        <img src="https://image.tmdb.org/t/p/w500${show.poster_path}" alt="${show.name}" />
+        <img src="${getPoster(show.poster_path)}" alt="${show.name}" />
       </a>
       <h4 class="swiper-rating">
-        <i class="fas fa-star text-secondary"></i>
-        ${show.vote_average?.toFixed(1) ?? 'N/A'}/10
+        <i class="fas fa-star text-secondary"></i> ${show.vote_average?.toFixed(1) ?? 'N/A'}/10
       </h4>
     `;
     wrapper.appendChild(div);
@@ -113,7 +115,9 @@ async function displayShowSlider() {
   });
 }
 
-// --- Popular Movies ---
+// -----------------------------
+// Popular Movies
+// -----------------------------
 async function displayPopularMovies() {
   const { results } = await fetchAPIData('movie/popular');
   const container = document.querySelector('#popular-movies');
@@ -125,7 +129,7 @@ async function displayPopularMovies() {
     div.classList.add('card');
     div.innerHTML = `
       <a href="movie-details.html?id=${movie.id}">
-        <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" class="card-img-top" alt="${movie.title}" />
+        <img src="${getPoster(movie.poster_path)}" class="card-img-top" alt="${movie.title}" />
       </a>
       <div class="card-body">
         <h5 class="card-title">${movie.title}</h5>
@@ -136,10 +140,11 @@ async function displayPopularMovies() {
   });
 }
 
-// --- Popular Shows ---
+// -----------------------------
+// Popular Shows
+// -----------------------------
 async function displayPopularShows() {
   const { results } = await fetchAPIData('tv/popular');
-  console.log(results);
   const container = document.querySelector('#popular-shows');
   if (!container) return;
 
@@ -149,7 +154,7 @@ async function displayPopularShows() {
     div.classList.add('card');
     div.innerHTML = `
       <a href="tv-details.html?id=${show.id}">
-        <img src="https://image.tmdb.org/t/p/w500${show.poster_path}" class="card-img-top" alt="${show.name}" />
+        <img src="${getPoster(show.poster_path)}" class="card-img-top" alt="${show.name}" />
       </a>
       <div class="card-body">
         <h5 class="card-title">${show.name}</h5>
@@ -160,7 +165,9 @@ async function displayPopularShows() {
   });
 }
 
-// --- Movie Details ---
+// -----------------------------
+// Movie Details
+// -----------------------------
 async function displayMovieDetails() {
   const movieId = new URLSearchParams(window.location.search).get('id');
   if (!movieId) return;
@@ -173,7 +180,7 @@ async function displayMovieDetails() {
   div.innerHTML = `
     <div class="details-top">
       <div>
-        <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" class="card-img-top" alt="${movie.title}" />
+        <img src="${getPoster(movie.poster_path)}" class="card-img-top" alt="${movie.title}" />
       </div>
       <div>
         <h2>${movie.title}</h2>
@@ -200,7 +207,9 @@ async function displayMovieDetails() {
   container.appendChild(div);
 }
 
-// --- Show Details ---
+// -----------------------------
+// Show Details
+// -----------------------------
 async function displayShowDetails() {
   const showId = new URLSearchParams(window.location.search).get('id');
   if (!showId) return;
@@ -213,7 +222,7 @@ async function displayShowDetails() {
   div.innerHTML = `
     <div class="details-top">
       <div>
-        <img src="https://image.tmdb.org/t/p/w500${show.poster_path}" class="card-img-top" alt="${show.name}" />
+        <img src="${getPoster(show.poster_path)}" class="card-img-top" alt="${show.name}" />
       </div>
       <div>
         <h2>${show.name}</h2>
@@ -238,7 +247,9 @@ async function displayShowDetails() {
   container.appendChild(div);
 }
 
-// --- Search ---
+// -----------------------------
+// Search
+// -----------------------------
 async function Search() {
   const urlParams = new URLSearchParams(window.location.search);
   global.search.term = urlParams.get('search-term');
@@ -262,7 +273,6 @@ async function Search() {
   document.querySelector('#search-term').value = '';
 }
 
-// --- Search Results ---
 function displaySearchResults(results) {
   const container = document.querySelector('#search-results');
   container.innerHTML = '';
@@ -271,7 +281,7 @@ function displaySearchResults(results) {
     div.classList.add('card');
     div.innerHTML = `
       <a href="${global.search.type}-details.html?id=${result.id}">
-        <img src="https://image.tmdb.org/t/p/w500${result.poster_path}" class="card-img-top" alt="${result.name || result.title}" />
+        <img src="${getPoster(result.poster_path)}" class="card-img-top" alt="${result.name || result.title}" />
       </a>
       <div class="card-body">
         <h5 class="card-title">${result.name || result.title}</h5>
@@ -282,7 +292,9 @@ function displaySearchResults(results) {
   });
 }
 
-// --- API Calls ---
+// -----------------------------
+// API
+// -----------------------------
 async function fetchAPIData(endpoint) {
   showSpinner();
   const response = await fetch(`${global.api.apiURL}/${endpoint}?api_key=${global.api.apiKey}&language=en-US`);
@@ -293,19 +305,19 @@ async function fetchAPIData(endpoint) {
 
 async function searchAPIData() {
   showSpinner();
-  const response = await fetch(`${global.api.apiURL}/search/${global.search.type}?api_key=${global.api.apiKey}&language=en-US&query=${global.search.term}&page=${global.search.page}`);
+  const response = await fetch(
+    `${global.api.apiURL}/search/${global.search.type}?api_key=${global.api.apiKey}&language=en-US&query=${global.search.term}&page=${global.search.page}`
+  );
   const data = await response.json();
   hideSpinner();
   return data;
 }
 
-// --- UI Helpers ---
-function showAlert(message) {
-  const alertEl = document.createElement('div');
-  alertEl.classList.add('alert');
-  alertEl.textContent = message;
-  document.querySelector('#alert')?.appendChild(alertEl);
-  setTimeout(() => alertEl.remove(), 3000);
+// -----------------------------
+// Helpers
+// -----------------------------
+function getPoster(posterPath) {
+  return posterPath ? `https://image.tmdb.org/t/p/w500${posterPath}` : 'images/no-image.jpg';
 }
 
 function showSpinner() {
@@ -323,6 +335,14 @@ function highlightActiveLink() {
       link.classList.add('active');
     }
   });
+}
+
+function showAlert(message) {
+  const alertEl = document.createElement('div');
+  alertEl.classList.add('alert');
+  alertEl.textContent = message;
+  document.querySelector('#alert')?.appendChild(alertEl);
+  setTimeout(() => alertEl.remove(), 3000);
 }
 
 function addCommasToNumber(number) {

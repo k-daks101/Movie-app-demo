@@ -39,43 +39,10 @@ function init() {
   highlightActiveLink();
 }
 
-// Helpers
-function getPoster(posterPath) {
-  return posterPath
-    ? `https://image.tmdb.org/t/p/w500${posterPath}`
-    : 'images/no-image.jpg'; // ⚠️ Must be lowercase on Netlify
-}
+// ===================
+// API HELPERS
+// ===================
 
-function showSpinner() {
-  document.querySelector('.spinner')?.classList.add('show');
-}
-
-function hideSpinner() {
-  document.querySelector('.spinner')?.classList.remove('show');
-}
-
-function highlightActiveLink() {
-  const links = document.querySelectorAll('.nav-link');
-  links.forEach((link) => {
-    if (link.getAttribute('href') === global.currentPage) {
-      link.classList.add('active');
-    }
-  });
-}
-
-function showAlert(message) {
-  const alertEl = document.createElement('div');
-  alertEl.classList.add('alert');
-  alertEl.textContent = message;
-  document.querySelector('#alert')?.appendChild(alertEl);
-  setTimeout(() => alertEl.remove(), 3000);
-}
-
-function addCommasToNumber(number) {
-  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
-
-// API
 async function fetchAPIData(endpoint) {
   showSpinner();
   const response = await fetch(`${global.api.apiURL}/${endpoint}?api_key=${global.api.apiKey}&language=en-US`);
@@ -94,7 +61,10 @@ async function searchAPIData() {
   return data;
 }
 
-// Sliders
+// ===================
+// SLIDERS
+// ===================
+
 async function displaySlider() {
   const { results } = await fetchAPIData('movie/now_playing');
   const wrapper = document.querySelector('.swiper-wrapper');
@@ -165,7 +135,10 @@ async function displayShowSlider() {
   });
 }
 
-// Movies / Shows
+// ===================
+// MOVIES & SHOWS
+// ===================
+
 async function displayPopularMovies() {
   const { results } = await fetchAPIData('movie/popular');
   const container = document.querySelector('#popular-movies');
@@ -193,9 +166,12 @@ async function displayPopularShows() {
   const container = document.querySelector('#popular-shows');
   if (!container) return;
 
+  console.log(results); // ✅ Show TV show data in console
+
   container.innerHTML = '';
   results.forEach((show) => {
-    console.log(show.name, show.poster_path); // Debug
+    console.log(show.name, show.poster_path); // ✅ Optional: log show name and poster
+
     const div = document.createElement('div');
     div.classList.add('card');
     div.innerHTML = `
@@ -211,7 +187,10 @@ async function displayPopularShows() {
   });
 }
 
-// Details Pages
+// ===================
+// DETAILS
+// ===================
+
 async function displayMovieDetails() {
   const movieId = new URLSearchParams(window.location.search).get('id');
   if (!movieId) return;
@@ -288,7 +267,10 @@ async function displayShowDetails() {
   container.appendChild(div);
 }
 
-// Search
+// ===================
+// SEARCH
+// ===================
+
 async function Search() {
   const urlParams = new URLSearchParams(window.location.search);
   global.search.term = urlParams.get('search-term');
@@ -329,4 +311,43 @@ function displaySearchResults(results) {
     `;
     container.appendChild(div);
   });
+}
+
+// ===================
+// UTILS
+// ===================
+
+function getPoster(posterPath) {
+  return posterPath
+    ? `https://image.tmdb.org/t/p/w500${posterPath}`
+    : 'images/no-image.jpg';
+}
+
+function showSpinner() {
+  document.querySelector('.spinner')?.classList.add('show');
+}
+
+function hideSpinner() {
+  document.querySelector('.spinner')?.classList.remove('show');
+}
+
+function highlightActiveLink() {
+  const links = document.querySelectorAll('.nav-link');
+  links.forEach((link) => {
+    if (link.getAttribute('href') === global.currentPage) {
+      link.classList.add('active');
+    }
+  });
+}
+
+function showAlert(message) {
+  const alertEl = document.createElement('div');
+  alertEl.classList.add('alert');
+  alertEl.textContent = message;
+  document.querySelector('#alert')?.appendChild(alertEl);
+  setTimeout(() => alertEl.remove(), 3000);
+}
+
+function addCommasToNumber(number) {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }

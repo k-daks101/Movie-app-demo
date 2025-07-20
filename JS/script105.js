@@ -139,6 +139,7 @@ async function displayPopularMovies() {
 // --- Popular Shows ---
 async function displayPopularShows() {
   const { results } = await fetchAPIData('tv/popular');
+  console.log(results);
   const container = document.querySelector('#popular-shows');
   if (!container) return;
 

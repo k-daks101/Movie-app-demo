@@ -317,7 +317,7 @@ async function searchAPIData() {
 // Helpers
 // -----------------------------
 function getPoster(posterPath) {
-  return posterPath ? `https://image.tmdb.org/t/p/w500${posterPath}` : 'images/no-image.jpg';
+  return posterPath ? `https://image.tmdb.org/t/p/w500${posterPath}` : 'Images/no-image.jpg';
 }
 
 function showSpinner() {

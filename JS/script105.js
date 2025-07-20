@@ -406,125 +406,94 @@ function displayPagination()
 }
 
 //Display Slider Movies
-
-async function displaySlider()
-
-{
+async function displaySlider() {
   const { results } = await fetchAPIData('movie/now_playing');
-   console.log(results);
-  results.forEach((movie) =>
-  {
+  const wrapper = document.querySelector('.swiper-wrapper');
+  wrapper.innerHTML = '';
+
+  results.forEach((movie) => {
     const div = document.createElement('div');
     div.classList.add('swiper-slide');
-   
-    
-    div.innerHTML =
-    `
-    <a href ="movie-details.html?id=${movie.id}">
-    <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}"/>
-    </a>
-    <h4 class ="swiper-rating">
-    <i class="swiper-rating">
-    <i class="fas fa-star text-secondary"></i>
-    ${movie.vote_average}/10
-    </h4>
+
+    div.innerHTML = `
+      <a href="movie-details.html?id=${movie.id}">
+        <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}" />
+      </a>
+      <h4 class="swiper-rating">
+        <i class="fas fa-star text-secondary"></i>
+        ${movie.vote_average}/10
+      </h4>
     `;
 
-    document.querySelector('.swipper-wrapper').appendChild(div);
+    wrapper.appendChild(div);
+  });
 
-     //console.log(swipper-wrapper);
-    initSwiper();
-  })
+  initSwiper();
 
-
-  function initSwiper()
-  {
-    const swiper = new Swiper('.swiper', 
-      {
-        slidesPerView: 0,
-        spaceBetween:10,
-        autoplay: 
-         {
-         delay:3000,
-         },
-       breakpoints:
-      {
-        600:
-        {
-          slidesPerView: 2
-        },
-        700:
-        {
-          slidesPerView: 2
-        },
-        900:
-        {
-          slidesPerView: 2
-        },
-      }
+  function initSwiper() {
+    new Swiper('.swiper', {
+      slidesPerView: 1,
+      spaceBetween: 20,
+      loop: true,
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
     });
   }
 }
-async function displayShowSlider()
 
-{
+//Display Show Slider
+
+async function displayShowSlider() {
   const { results } = await fetchAPIData('tv/on_the_air');
-  //  console.log(results);
-  results.forEach((show) =>
-  {
-   
+  const wrapper = document.querySelector('#now-playing-shows');
+  wrapper.innerHTML = '';
+
+  if (!results || results.length === 0) {
+    wrapper.innerHTML = '<p>No currently airing TV shows found.</p>';
+    return;
+  }
+
+  results.forEach((show) => {
     const div = document.createElement('div');
     div.classList.add('swiper-slide');
-   
-    
-    div.innerHTML =
-    `
-    <a href ="tv-details.html?id=${show.id}">
-    <img src="https://image.tmdb.org/t/p/w500${show.poster_path}" alt="${show.name}"/>
-    </a>
-    <h4 class ="swiper-rating">
-    <i class="swiper-rating">
-    <i class="fas fa-star text-secondary"></i>
-    ${show.vote_average}/10
-    </h4>
+
+    div.innerHTML = `
+      <a href="tv-details.html?id=${show.id}">
+        <img src="${show.poster_path ? `https://image.tmdb.org/t/p/w500${show.poster_path}` : 'images/no-image.jpg'}" alt="${show.name}" />
+      </a>
+      <h4 class="swiper-rating">
+        <i class="fas fa-star text-secondary"></i>
+        ${show.vote_average?.toFixed(1) ?? 'N/A'}/10
+      </h4>
     `;
 
-    document.querySelector('.swipper-wrapperr').appendChild(div);
+    wrapper.appendChild(div);
+  });
 
-     //console.log(swipper-wrapper);
-    initSwiper();
-  })
+  initSwiper();
 
-
-  function initSwiper()
-  {
-    const swiper = new Swiper('.swiper', 
-      {
-        slidesPerView: 2,
-        spaceBetween:10,
-        autoplay: 
-         {
-         delay:3000,
-         },
-       breakpoints:
-      {
-        600:
-        {
-          slidesPerView: 2
-        },
-        700:
-        {
-          slidesPerView: 2
-        },
-        900:
-        {
-          slidesPerView: 2
-        },
-      }
+  function initSwiper() {
+    new Swiper('.swiper', {
+      slidesPerView: 1,
+      spaceBetween: 20,
+      loop: true,
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
     });
   }
 }
-
 
 
 // Fetch data from TMDB API

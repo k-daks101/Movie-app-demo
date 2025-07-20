@@ -39,9 +39,62 @@ function init() {
   highlightActiveLink();
 }
 
-// -----------------------------
-// Movie Slider
-// -----------------------------
+// Helpers
+function getPoster(posterPath) {
+  return posterPath
+    ? `https://image.tmdb.org/t/p/w500${posterPath}`
+    : 'images/no-image.jpg'; // ⚠️ Must be lowercase on Netlify
+}
+
+function showSpinner() {
+  document.querySelector('.spinner')?.classList.add('show');
+}
+
+function hideSpinner() {
+  document.querySelector('.spinner')?.classList.remove('show');
+}
+
+function highlightActiveLink() {
+  const links = document.querySelectorAll('.nav-link');
+  links.forEach((link) => {
+    if (link.getAttribute('href') === global.currentPage) {
+      link.classList.add('active');
+    }
+  });
+}
+
+function showAlert(message) {
+  const alertEl = document.createElement('div');
+  alertEl.classList.add('alert');
+  alertEl.textContent = message;
+  document.querySelector('#alert')?.appendChild(alertEl);
+  setTimeout(() => alertEl.remove(), 3000);
+}
+
+function addCommasToNumber(number) {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+// API
+async function fetchAPIData(endpoint) {
+  showSpinner();
+  const response = await fetch(`${global.api.apiURL}/${endpoint}?api_key=${global.api.apiKey}&language=en-US`);
+  const data = await response.json();
+  hideSpinner();
+  return data;
+}
+
+async function searchAPIData() {
+  showSpinner();
+  const response = await fetch(
+    `${global.api.apiURL}/search/${global.search.type}?api_key=${global.api.apiKey}&language=en-US&query=${global.search.term}&page=${global.search.page}`
+  );
+  const data = await response.json();
+  hideSpinner();
+  return data;
+}
+
+// Sliders
 async function displaySlider() {
   const { results } = await fetchAPIData('movie/now_playing');
   const wrapper = document.querySelector('.swiper-wrapper');
@@ -77,9 +130,6 @@ async function displaySlider() {
   });
 }
 
-// -----------------------------
-// Show Slider
-// -----------------------------
 async function displayShowSlider() {
   const { results } = await fetchAPIData('tv/on_the_air');
   const wrapper = document.querySelector('.swiper-wrapper');
@@ -115,9 +165,7 @@ async function displayShowSlider() {
   });
 }
 
-// -----------------------------
-// Popular Movies
-// -----------------------------
+// Movies / Shows
 async function displayPopularMovies() {
   const { results } = await fetchAPIData('movie/popular');
   const container = document.querySelector('#popular-movies');
@@ -140,20 +188,14 @@ async function displayPopularMovies() {
   });
 }
 
-// -----------------------------
-// Popular Shows
-// -----------------------------
 async function displayPopularShows() {
   const { results } = await fetchAPIData('tv/popular');
   const container = document.querySelector('#popular-shows');
   if (!container) return;
 
-  console.log(results); // Debug log
-
   container.innerHTML = '';
   results.forEach((show) => {
-    console.log(show.name, show.poster_path); // Log to debug missing posters
-
+    console.log(show.name, show.poster_path); // Debug
     const div = document.createElement('div');
     div.classList.add('card');
     div.innerHTML = `
@@ -169,9 +211,7 @@ async function displayPopularShows() {
   });
 }
 
-// -----------------------------
-// Movie Details
-// -----------------------------
+// Details Pages
 async function displayMovieDetails() {
   const movieId = new URLSearchParams(window.location.search).get('id');
   if (!movieId) return;
@@ -211,9 +251,6 @@ async function displayMovieDetails() {
   container.appendChild(div);
 }
 
-// -----------------------------
-// Show Details
-// -----------------------------
 async function displayShowDetails() {
   const showId = new URLSearchParams(window.location.search).get('id');
   if (!showId) return;
@@ -251,9 +288,7 @@ async function displayShowDetails() {
   container.appendChild(div);
 }
 
-// -----------------------------
 // Search
-// -----------------------------
 async function Search() {
   const urlParams = new URLSearchParams(window.location.search);
   global.search.term = urlParams.get('search-term');
@@ -294,63 +329,4 @@ function displaySearchResults(results) {
     `;
     container.appendChild(div);
   });
-}
-
-// -----------------------------
-// API Helpers
-// -----------------------------
-async function fetchAPIData(endpoint) {
-  showSpinner();
-  const response = await fetch(`${global.api.apiURL}/${endpoint}?api_key=${global.api.apiKey}&language=en-US`);
-  const data = await response.json();
-  hideSpinner();
-  return data;
-}
-
-async function searchAPIData() {
-  showSpinner();
-  const response = await fetch(
-    `${global.api.apiURL}/search/${global.search.type}?api_key=${global.api.apiKey}&language=en-US&query=${global.search.term}&page=${global.search.page}`
-  );
-  const data = await response.json();
-  hideSpinner();
-  return data;
-}
-
-// -----------------------------
-// Utilities
-// -----------------------------
-function getPoster(posterPath) {
-  return posterPath
-    ? `https://image.tmdb.org/t/p/w500${posterPath}`
-    : 'Images/no-image.jpg'; // Fallback image
-}
-
-function showSpinner() {
-  document.querySelector('.spinner')?.classList.add('show');
-}
-
-function hideSpinner() {
-  document.querySelector('.spinner')?.classList.remove('show');
-}
-
-function highlightActiveLink() {
-  const links = document.querySelectorAll('.nav-link');
-  links.forEach((link) => {
-    if (link.getAttribute('href') === global.currentPage) {
-      link.classList.add('active');
-    }
-  });
-}
-
-function showAlert(message) {
-  const alertEl = document.createElement('div');
-  alertEl.classList.add('alert');
-  alertEl.textContent = message;
-  document.querySelector('#alert')?.appendChild(alertEl);
-  setTimeout(() => alertEl.remove(), 3000);
-}
-
-function addCommasToNumber(number) {
-  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }

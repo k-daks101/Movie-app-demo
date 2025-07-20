@@ -143,21 +143,15 @@ async function displayPopularMovies() {
 // -----------------------------
 // Popular Shows
 // -----------------------------
-function getPoster(posterPath) {
-  return posterPath 
-    ? `https://image.tmdb.org/t/p/w500${posterPath}` 
-    : 'images/no-image.jpg';
-}
-
 async function displayPopularShows() {
   const { results } = await fetchAPIData('tv/popular');
   const container = document.querySelector('#popular-shows');
-  if (!container) return;
-
   console.log(results);
   results.forEach((show) => {
-    console.log(show.name, show.poster_path); // helps debug
-  });
+  console.log(show.name, show.poster_path); // helps you debug missing images
+});
+
+  if (!container) return;
 
   container.innerHTML = '';
   results.forEach((show) => {

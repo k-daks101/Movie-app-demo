@@ -17,20 +17,25 @@ document.addEventListener('DOMContentLoaded', init);
 function init() {
   switch (global.currentPage) {
     case '/':
+    case '/index':
     case '/index.html':
       displaySlider();
       displayPopularMovies();
       break;
+    case '/shows':
     case '/shows.html':
       displayShowSlider();
       displayPopularShows();
       break;
+    case '/movie-details':
     case '/movie-details.html':
       displayMovieDetails();
       break;
+    case '/tv-details':
     case '/tv-details.html':
       displayShowDetails();
       break;
+    case '/search':
     case '/search.html':
       Search();
       break;

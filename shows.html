@@ -1,70 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Fonts & Styles -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-    <link rel="stylesheet" href="lib/swiper.css" />
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/spinner.css" />
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet"/>
 
-    <!-- Scripts -->
-    <script src="lib/swiper.js"></script>
-    <script src="/JS/script105.js" defer></script>
+  <!-- Styles -->
+  <link rel="stylesheet" href="lib/swiper.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/spanner.css" />
 
-    <title>Blaze Shows</title>
-  </head>
-  <body>
-    <header class="main-header">
-      <div class="container">
-        <div class="logo"><a href="/index.html">BLAZE</a></div>
-        <nav>
-          <ul>
-            <li><a class="nav-link" href="/">Movies</a></li>
-            <li><a class="nav-link" href="/shows.html">TV Shows</a></li>
-          </ul>
-        </nav>
+  <!-- Scripts -->
+  <script src="lib/swiper.js"></script>
+  <script src="/JS/script105.js" defer></script>
+
+  <title>BLAZE</title>
+</head>
+<body>
+  <header class="main-header">
+    <div class="container">
+      <div class="logo"><a href="/index.html">Blaze</a></div>
+      <nav>
+        <ul>
+          <li><a class="nav-link" href="/">Movies</a></li>
+          <li><a class="nav-link" href="/shows.html">TV Shows</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Now Playing Section -->
+  <section class="now-playing">
+    <h2>Now Playing</h2>
+    <div class="swiper">
+      <div class="swiper-wrapper" id="now-playing-shows">
+        <!-- Slides will be injected here via JS -->
       </div>
-    </header>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+    </div>
+  </section>
 
-    <!-- Now Playing TV Shows -->
-    <section class="now-playing">
-      <h2>Now Playing</h2>
-      <div class="swiper">
-        <div class="swiper-wrapper" id="now-playing-shows">
-          <!-- Slides injected via JS -->
+  <!-- Search TV Shows -->
+  <section class="search"> 
+    <div class="container">
+      <div id="alert"></div>
+      <form action="/search.html" class="search-form">
+        <div class="search-radio">
+          <input type="radio" id="movie" name="type" value="movie" />
+          <label for="movies">Movies</label>
+          <input type="radio" id="tv" name="type" value="tv" checked />
+          <label for="shows">TV Shows</label>
         </div>
-        <!-- Optional Swiper Navigation -->
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-      </div>
-    </section>
-
-    <!-- Popular TV Shows -->
-    <section class="container">
-      <h2>Popular TV Shows</h2>
-      <div id="popular-shows" class="grid"></div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="main-footer">
-      <div class="container">
-        <div class="logo"><span>BLAZE</span></div>
-        <div class="social-links">
-          <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
-          <a href="https://www.twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
-          <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+        <div class="search-flex">
+          <input
+            type="text"
+            name="search-term"
+            id="search-term"
+            placeholder="Enter search term"
+          />
+          <button class="btn" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
         </div>
-      </div>
-    </footer>
+      </form>
+    </div>
+  </section>
 
-    <div class="spinner"></div>
-    <script>console.log('JS loaded')</script>
-  </body>
+  <!-- Popular TV Shows -->
+  <section class="container">
+    <h2>Popular TV Shows</h2>
+    <div id="popular-shows" class="grid"></div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="container">
+      <div class="logo"><span>Blaze</span></div>
+      <div class="social-links">
+        <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+        <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="spinner"></div>
+</body>
 </html>

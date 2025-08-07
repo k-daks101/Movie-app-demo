@@ -101,8 +101,11 @@ async function displaySlider() {
 }
 
 async function displayShowSlider() {
+  console.log('displayShowSlider called');
   const { results } = await fetchAPIData('tv/on_the_air');
+  console.log('API results:', results);
   const wrapper = document.querySelector('.swiper-wrapper');
+  console.log('swiper-wrapper found:', !!wrapper);
   if (!wrapper) return;
 
   wrapper.innerHTML = '';
